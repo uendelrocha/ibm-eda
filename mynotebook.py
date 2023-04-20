@@ -85,10 +85,12 @@ def myDescribe(dataframe, cols=[]):
       mode = dataframe[col].mode().to_list()
 
       ## Add asymmetry
-      if (abs(dfStat.loc['pearson', col]) > 0.15) and (abs(dfStat.loc['pearson', col]) < 1):
-        dfStat.loc['asymmetry', col] = 'small'
-      elif (abs(dfStat.loc['pearson', col]) > 1):
-        dfStat.loc['asymmetry', col] = 'great'
+      if 0 < abs(dfStat.loc['pearson', col] < 0.15:
+        dfStat.loc['asymmetry', col] = 'weak'
+      elif 0.15 <= abs(dfStat.loc['pearson', col] <= 1.00:
+        dfStat.loc['asymmetry', col] = 'moderate'
+      elif abs(dfStat.loc['pearson', col]) > 1.00:
+        dfStat.loc['asymmetry', col] = 'strong'
       else:
         dfStat.loc['asymmetry', col] = 'none'
 
@@ -107,8 +109,6 @@ def myDescribe(dataframe, cols=[]):
         dfStat.loc['outliers', col] = 'low'
       elif dfStat.loc['kurtosis', col] == 3:
         dfStat.loc['outliers', col] = 'flat'
-
-
 
       # Add mode
       if len(mode) == len(dataframe):
