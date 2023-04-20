@@ -97,7 +97,7 @@ def myDescribe(dataframe, cols=[]):
     for col in cols:
       mode = dataframe[col].mode().to_list()
 
-      ## Add asymmetry
+      ## Add Pearson asymmetry
       if 0.00 < abs(dfStat.loc['Pearson', col]) < 0.15:
         dfStat.loc['Pearson asymmetry', col] = 'weak'
       elif 0.15 <= abs(dfStat.loc['Pearson', col]) <= 1.00:
@@ -107,7 +107,7 @@ def myDescribe(dataframe, cols=[]):
       else:
         dfStat.loc['Pearson asymmetry', col] = 'none'
 
-      # Add symmetry
+      # Add Fisher asymmetry
       if dfStat.loc['Fisher', col] == 0:
         dfStat.loc['Fisher asymmetry', col] = 'symmetrical'
       elif -0.5 <= dfStat.loc['Fisher', col] <= 0.5:
