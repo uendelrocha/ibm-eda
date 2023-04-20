@@ -69,12 +69,12 @@ def myDescribe(dataframe, cols=[]):
     # Add CV (Coefficient of variation)
     dfStat.loc['cv'] = round(dfStat.loc['std'] / dfStat.loc['mean'], 2)
 
-    # Add iqr
-    dfStat.loc['iqr'] = dfStat.loc['75%'] - dfStat.loc['25%']
-
     # Add QCD (Quartile Coefficient of Dispersion)
     # qcd = (Q3 - Q1) / (Q3 + Q1)
-    dfStat.loc['qcd'] = round(dfStat.loc['iqr']/(dfStat.loc['75%'] + dfStat.loc['25%']), 2)
+    dfStat.loc['qcd'] = round((dfStat.loc['75%'] - dfStat.loc['25%'])/(dfStat.loc['75%'] + dfStat.loc['25%']), 2)
+
+    # Add iqr
+    dfStat.loc['iqr'] = dfStat.loc['75%'] - dfStat.loc['25%']
 
     # Add lower and upper bounds
     dfStat.loc['lower'] = dfStat.loc['75%'] - 1.5 * dfStat.loc['iqr']
