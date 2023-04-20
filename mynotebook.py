@@ -110,6 +110,17 @@ def myDescribe(dataframe, cols=[]):
       elif dfStat.loc['skew', col] > 0:
         dfStat.loc['skewed', col] = 'right (+)'
 
+      # Add symmetry
+      if dfStat.loc['skew', col] == 0:
+        dfStat.loc['symmetry', col] = 'normal'
+      elif -0.5 <= dfStat.loc['skew', col] <= 0.5:
+        dfStat.loc['symmetry', col] = 'enough'
+      elif (-1.0 <= dfStat.loc['skew', col] < -0.5) or (0.5 < dfStat.loc['skew', col] <= 1):
+        dfStat.loc['symmetry', col] = 'moderate'
+      elif (dfStat.loc['skew', col] < -1) or (dfStat.loc['skew', col] > 1):
+        dfStat.loc['symmetry', col] = 'low'
+
+
       # Add outlier and distribution aspect
       if dfStat.loc['kurtosis', col] > 3:
         dfStat.loc['outliers', col] = 'high'
