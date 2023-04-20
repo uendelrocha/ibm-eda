@@ -110,13 +110,16 @@ def myDescribe(dataframe, cols=[]):
       elif dfStat.loc['skew', col] > 0:
         dfStat.loc['skewed', col] = 'right (+)'
 
-      # Add outlier
+      # Add outlier and distribution aspect
       if dfStat.loc['kurtosis', col] > 3:
         dfStat.loc['outliers', col] = 'high'
+        dfStat.loc['aspect', col] = 'leptokurtic'
       elif dfStat.loc['kurtosis', col] < 3:
         dfStat.loc['outliers', col] = 'low'
+        dfStat.loc['aspect', col] = 'platykurtic'
       elif dfStat.loc['kurtosis', col] == 3:
-        dfStat.loc['outliers', col] = 'flat'
+        dfStat.loc['outliers', col] = 'normal'
+        dfStat.loc['aspect', col] = 'mesokurtic'
 
       # Add mode
       if len(mode) == len(dataframe):
