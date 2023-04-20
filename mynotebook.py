@@ -61,19 +61,27 @@ def myDescribe(dataframe, cols=[]):
     if len(cols) == 0:
         cols = floatCols(dataframe)
     
-    # Add range
     dfStat = dataframe[cols].describe()
+
+    # Add range
     dfStat.loc['range'] = dfStat.loc['max'] - dfStat.loc['min']
+
+    # Add CV (Coefficient of variation)
+    dfStat.loc['cv'] = round(dfStat.loc['std'] / dfStat.loc['mean'], 2)
 
     # Add iqr
     dfStat.loc['iqr'] = dfStat.loc['75%'] - dfStat.loc['25%']
+
+    # Add QCD (Quartile Coefficient of Dispersion)
+    # qcd = (Q3 - Q1) / (Q3 + Q1)
+    dfStat.loc['qcd'] = round(dfStat.loc['iqr']/(dfStat.loc['75%'] + dfStat.loc['25%']), 2)
 
     # Add lower and upper bounds
     dfStat.loc['lower'] = dfStat.loc['75%'] - 1.5 * dfStat.loc['iqr']
     dfStat.loc['upper'] = dfStat.loc['75%'] + 1.5 * dfStat.loc['iqr']
 
     # Add Pearson
-    dfStat.loc['pearson'] = (3 * (dfStat.loc['mean'] - dfStat.loc['50%'])) / dfStat.loc['std']
+    dfStat.loc['Pearson'] = (3 * (dfStat.loc['mean'] - dfStat.loc['50%'])) / dfStat.loc['std']
 
     # Add Skew
     dfStat.loc['skew'] = dataframe[cols].skew(axis=0)
@@ -85,11 +93,11 @@ def myDescribe(dataframe, cols=[]):
       mode = dataframe[col].mode().to_list()
 
       ## Add asymmetry
-      if 0.00 < abs(dfStat.loc['pearson', col]) < 0.15:
+      if 0.00 < abs(dfStat.loc['Pearson', col]) < 0.15:
         dfStat.loc['asymmetry', col] = 'weak'
-      elif 0.15 <= abs(dfStat.loc['pearson', col]) <= 1.00:
+      elif 0.15 <= abs(dfStat.loc['Pearson', col]) <= 1.00:
         dfStat.loc['asymmetry', col] = 'moderate'
-      elif abs(dfStat.loc['pearson', col]) > 1.00:
+      elif abs(dfStat.loc['Pearson', col]) > 1.00:
         dfStat.loc['asymmetry', col] = 'strong'
       else:
         dfStat.loc['asymmetry', col] = 'none'
