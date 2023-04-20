@@ -88,7 +88,7 @@ def myDescribe(dataframe, cols=[]):
     dfStat.loc['Fisher'] = dataframe[cols].skew(axis=0) # scipy.stats.skew(..., bias=False)
 
     # Add z-score and p-value
-    dfStat.loc['z-score'], dfStat.loc['p-value'] = skewtest(dataframe[cols], axis=0)
+    dfStat.loc['z'], dfStat.loc['p'] = skewtest(dataframe[cols], axis=0)
 
     # Add kurtosis
     dfStat.loc['kurtosis'] = dataframe[cols].kurt(axis=0)
