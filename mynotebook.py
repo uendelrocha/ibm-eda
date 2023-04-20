@@ -107,14 +107,6 @@ def myDescribe(dataframe, cols=[]):
       else:
         dfStat.loc['Pearson asymmetry', col] = 'none'
 
-      # Add skewed
-      if dfStat.loc['Fisher', col] == 0:
-        dfStat.loc['skewed', col] = 'normal (0)'
-      elif dfStat.loc['Fisher', col] < 0:
-        dfStat.loc['skewed', col] = 'left (-)'
-      elif dfStat.loc['Fisher', col] > 0:
-        dfStat.loc['skewed', col] = 'right (+)'
-
       # Add symmetry
       if dfStat.loc['Fisher', col] == 0:
         dfStat.loc['Fisher asymmetry', col] = 'symmetrical'
@@ -125,6 +117,13 @@ def myDescribe(dataframe, cols=[]):
       elif (dfStat.loc['Fisher', col] < -1) or (dfStat.loc['Fisher', col] > 1):
         dfStat.loc['Fisher asymmetry', col] = 'highly skewed'
 
+      # Add skewed
+      if dfStat.loc['Fisher', col] == 0:
+        dfStat.loc['skewed', col] = 'normal (0)'
+      elif dfStat.loc['Fisher', col] < 0:
+        dfStat.loc['skewed', col] = 'left (-)'
+      elif dfStat.loc['Fisher', col] > 0:
+        dfStat.loc['skewed', col] = 'right (+)'
 
       # Add outlier and distribution aspect
       if dfStat.loc['kurtosis', col] > 3:
