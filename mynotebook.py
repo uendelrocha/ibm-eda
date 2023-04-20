@@ -85,9 +85,9 @@ def myDescribe(dataframe, cols=[]):
       mode = dataframe[col].mode().to_list()
 
       ## Add asymmetry
-      if 0 < abs(dfStat.loc['pearson', col] < 0.15:
+      if 0.00 < abs(dfStat.loc['pearson', col]) < 0.15:
         dfStat.loc['asymmetry', col] = 'weak'
-      elif 0.15 <= abs(dfStat.loc['pearson', col] <= 1.00:
+      elif 0.15 <= abs(dfStat.loc['pearson', col]) <= 1.00:
         dfStat.loc['asymmetry', col] = 'moderate'
       elif abs(dfStat.loc['pearson', col]) > 1.00:
         dfStat.loc['asymmetry', col] = 'strong'
