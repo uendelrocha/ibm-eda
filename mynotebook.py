@@ -80,14 +80,18 @@ def myDescribe(dataframe, cols=[]):
     dfStat.loc['lower'] = dfStat.loc['75%'] - 1.5 * dfStat.loc['iqr']
     dfStat.loc['upper'] = dfStat.loc['75%'] + 1.5 * dfStat.loc['iqr']
 
-    # Add Pearson
+    # Add Pearson Asimmetry Coefficient
     dfStat.loc['Pearson'] = (3 * (dfStat.loc['mean'] - dfStat.loc['50%'])) / dfStat.loc['std']
 
-    # Add Skew
-    dfStat.loc['skew'] = dataframe[cols].skew(axis=0)
+    # Add Fisher Skew Coefficient
+    dfStat.loc['Fisher'] = dataframe[cols].skew(axis=0) # scipy.stats.skew(..., bias=False)
+
+    # Add z-score and p-value
+    dfStat.loc['z-score'], dfStat.loc['p-value'] = scipy.stats.skewtest(dataframe[cols], axis=0)
 
     # Add kurtosis
     dfStat.loc['kurtosis'] = dataframe[cols].kurt(axis=0)
+
     
     for col in cols:
       mode = dataframe[col].mode().to_list()
@@ -103,22 +107,22 @@ def myDescribe(dataframe, cols=[]):
         dfStat.loc['asymmetry', col] = 'none'
 
       # Add skewed
-      if dfStat.loc['skew', col] == 0:
+      if dfStat.loc['Fisher', col] == 0:
         dfStat.loc['skewed', col] = 'normal (0)'
-      elif dfStat.loc['skew', col] < 0:
+      elif dfStat.loc['Fisher', col] < 0:
         dfStat.loc['skewed', col] = 'left (-)'
-      elif dfStat.loc['skew', col] > 0:
+      elif dfStat.loc['Fisher', col] > 0:
         dfStat.loc['skewed', col] = 'right (+)'
 
       # Add symmetry
-      if dfStat.loc['skew', col] == 0:
-        dfStat.loc['symmetry', col] = 'normal'
-      elif -0.5 <= dfStat.loc['skew', col] <= 0.5:
+      if dfStat.loc['Fisher', col] == 0:
+        dfStat.loc['symmetry', col] = 'symmetrical'
+      elif -0.5 <= dfStat.loc['Fisher', col] <= 0.5:
         dfStat.loc['symmetry', col] = 'enough'
-      elif (-1.0 <= dfStat.loc['skew', col] < -0.5) or (0.5 < dfStat.loc['skew', col] <= 1):
-        dfStat.loc['symmetry', col] = 'moderate'
-      elif (dfStat.loc['skew', col] < -1) or (dfStat.loc['skew', col] > 1):
-        dfStat.loc['symmetry', col] = 'low'
+      elif (-1.0 <= dfStat.loc['Fisher', col] < -0.5) or (0.5 < dfStat.loc['Fisher', col] <= 1):
+        dfStat.loc['symmetry', col] = 'moderate asymmetry'
+      elif (dfStat.loc['Fisher', col] < -1) or (dfStat.loc['Fisher', col] > 1):
+        dfStat.loc['symmetry', col] = 'high asymmetry'
 
 
       # Add outlier and distribution aspect
