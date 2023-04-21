@@ -99,23 +99,23 @@ def myDescribe(dataframe, cols=[]):
 
       ## Add Pearson asymmetry
       if 0.00 < abs(dfStat.loc['Pearson', col]) < 0.15:
-        dfStat.loc['Pearson skewness', col] = 'weak'
+        dfStat.loc['Pearson asymmetry', col] = 'weak'
       elif 0.15 <= abs(dfStat.loc['Pearson', col]) <= 1.00:
-        dfStat.loc['Pearson skewness', col] = 'moderate'
+        dfStat.loc['Pearson asymmetry', col] = 'moderate'
       elif abs(dfStat.loc['Pearson', col]) > 1.00:
-        dfStat.loc['Pearson skewness', col] = 'strong'
+        dfStat.loc['Pearson asymmetry', col] = 'strong'
       else:
-        dfStat.loc['Pearson skewness', col] = 'none'
+        dfStat.loc['Pearson asymmetry', col] = 'none'
 
       # Add Fisher asymmetry
       if dfStat.loc['Fisher', col] == 0:
-        dfStat.loc['Fisher skewness', col] = 'symmetrical'
+        dfStat.loc['Fisher asymmetry', col] = 'symmetrical'
       elif -0.5 <= dfStat.loc['Fisher', col] <= 0.5:
-        dfStat.loc['Fisher skewness', col] = 'fairly symmetric'
+        dfStat.loc['Fisher asymmetry', col] = 'fairly symmetric'
       elif (-1.0 <= dfStat.loc['Fisher', col] < -0.5) or (0.5 < dfStat.loc['Fisher', col] <= 1):
-        dfStat.loc['Fisher skewness', col] = 'moderately skewed'
+        dfStat.loc['Fisher asymmetry', col] = 'moderately skewed'
       elif (dfStat.loc['Fisher', col] < -1) or (dfStat.loc['Fisher', col] > 1):
-        dfStat.loc['Fisher skewness', col] = 'highly skewed'
+        dfStat.loc['Fisher asymmetry', col] = 'highly skewed'
 
       # Add skewed
       if dfStat.loc['Fisher', col] == 0:
