@@ -34,19 +34,28 @@ def roundUp(number):
 
   (round(cities_succ, 0) + 1) if (cities_succ - round(cities_succ, 0)) > 0 else cities_succ
 
+# Calcula o log(1+x) de cada valor numa série ou array, ou o log(1+x) de um escalar
 def myLog1p(value):
-
+    '''
+    Function: myLog1p(value)
+    Objective: return numpy.log1p
+    Parameter: value must be a pandas.Series, a numpy.ndarray or a scalar
+    '''
     #print(type(value))
     #print(value)
 
     if type(value) == pd.Series:
       result = value.apply(lambda x : -np.log1p(abs(x)) if x < 0 else np.log1p(x))
+    elif type(value) == np.ndarray:
+        # Apply -np.log1p or np.log1p over each value on ndarray
+        result = list(map(lambda x : -np.log1p(abs(x)) if x < 0 else np.log1p(abs(x)), [a for a in value]))
     else:
-      result = -np.log1p(abs(value)) if value < 0 else np.log1p(value)
+        result = -np.log1p(abs(value)) if value < 0 else np.log1p(value)
 
     #print(result)
 
     return result
+
     '''
     if x < 0:
       return -np.log1p(abs(value))
