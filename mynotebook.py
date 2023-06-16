@@ -94,6 +94,19 @@ def myDescribe(dataframe, cols=[]):
     dfStat.loc['Pearson'] = (3 * (dfStat.loc['mean'] - dfStat.loc['50%'])) / dfStat.loc['std']
 
     # Add Fisher Skew Coefficient
+    '''
+    SKEWNESS is a measure of the asymmetry of the probability distribution 
+    of a real-valued random variable about its mean. The skewness value can be 
+    positive, zero, negative, or undefined. FOR A UNIMODAL DISTRIBUTION, 
+    NEGATIVE SKEW COMMONLY INDICATES THAT THE TAIL IS ON THE LEFT SIDE OF THE 
+    DISTRIBUTION, AND POSITIVE SKEW INDICATES THAT THE TAIL IS ON THE RIGHT. 
+    In cases where one tail is long but the other tail is fat, skewness does 
+    not obey a simple rule. For example, a zero value means that the tails on 
+    both sides of the mean balance out overall; this is the case for a 
+    symmetric distribution, but can also be true for an asymmetric 
+    distribution where one tail is long and thin, and the other is short 
+    but fat.
+    '''
     dfStat.loc['Fisher'] = dataframe[cols].skew(axis=0) # scipy.stats.skew(..., bias=False)
 
     # Add z-score and p-value
@@ -165,6 +178,7 @@ def myDescribe(dataframe, cols=[]):
     #dataframe[cols].info()
     
     # df3.boxplot()
+    return dfStat.T
 
 
 # Return a dataframe with distinct rows
